@@ -10,23 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
-    MenuController menuController = new MenuController();
-
-    /*
-    try {
-        DatabaseConnection.createFiles();
-    } catch (IOException e2) {
-        throw new RuntimeException(e2.getMessage());
-    } catch (Exception e3) {
-        e3.printStackTrace();
-    }
-
-    boolean run = true;
-        menuController.menu(run);
-  */
-
-
-    // JavaFX scene builder start
+    // JavaFX Scene Builder Start
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("hello-view.fxml"));
@@ -37,6 +21,22 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
-    }
-}
+        MenuController menuController = new MenuController();
+
+        try {
+            DatabaseConnection.createFiles();
+        } catch (IOException e2) {
+            throw new RuntimeException(e2.getMessage());
+        } catch (Exception e3) {
+            e3.printStackTrace();
+        }
+
+        boolean run = true;
+        menuController.menu(run);
+
+        //launch();
+
+
+
+    }// main End
+}// Main END
