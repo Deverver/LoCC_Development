@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField alignment="CENTER" editable="false" layoutX="220.0" layoutY="45.0" prefHeight="30.0" prefWidth="200.0" promptText="Welcome back to">
+         <font>
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="220.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@LoCC_Logo.png" />
+         </image></ImageView>
+      <Button fx:id="StartupButton" layoutX="288.0" layoutY="300.0" mnemonicParsing="false" text="Continue" textAlignment="CENTER" />
+   </children>
+</AnchorPane>

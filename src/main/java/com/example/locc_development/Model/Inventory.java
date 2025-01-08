@@ -2,6 +2,7 @@ package com.example.locc_development.Model;
 
 
 import com.example.locc_development.Controller.SavedInventory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class Inventory {
         }
         return 0;
     }
+
     //endregion
     public int addItem(Item item) {
         // Check if item already exists in the Inventory
@@ -43,18 +45,17 @@ public class Inventory {
             if (item instanceof Consumable) {
                 Consumable consumableItem = (Consumable) existingItem;
                 consumableItem.setItemAmount(consumableItem.getItemAmount() + 1);
+                consumableItem.setItem_weight(consumableItem.getItem_weight() + item.getItem_weight());
                 return 1;
-            }
-
-            // Handle Resource type
-            if (item instanceof Resource) {
+            } else if (item instanceof Resource) {
                 Resource resourceItem = (Resource) existingItem;
                 resourceItem.setItemAmount(resourceItem.getItemAmount() + 1);
+                resourceItem.setItem_weight(resourceItem.getItem_weight() + item.getItem_weight());
+                return 1;
+            } else {
+                containedItems.add(item);
                 return 1;
             }
-
-            // If item is neither Consumable nor Resource, we won't add duplicates
-            return 0;
         }
 
         // If the inventory has space, add the new item
@@ -66,12 +67,24 @@ public class Inventory {
         // If the inventory has no space, reject the item
         return 0;
     }
+
     public int removeItem(Item item) {
         int existingItemIndex = findContainedItemByName(item.getItem_name());
         if (existingItemIndex != -1) {
-            containedItems.remove(existingItemIndex);
+            Item existingItem = containedItems.get(existingItemIndex);
+            if (item instanceof Consumable){
+                Consumable consumableItem = (Consumable) existingItem;
+                consumableItem.setItemAmount(consumableItem.getItemAmount() - 1);
+                consumableItem.setItem_weight(consumableItem.getItem_weight() - item.getItem_weight());
+            } else if (item instanceof Resource) {
+                Resource resourceItem = (Resource) existingItem;
+                resourceItem.setItemAmount(resourceItem.getItemAmount() - 1);
+                resourceItem.setItem_weight(resourceItem.getItem_weight() - item.getItem_weight());
+            } else {
+                containedItems.remove(existingItemIndex);
+            }
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }
@@ -101,6 +114,12 @@ public class Inventory {
         return -1;
     }
 
+    public Item findContainedItemByIndex(int itemIndex) {
+        Item item;
+        item = containedItems.get(itemIndex);
+        return item;
+    }
+
     public int getSize() {
         if (containedItems.size() <= containedInventoryMaxCapacity) {
             return containedItems.size();
@@ -108,15 +127,16 @@ public class Inventory {
             return -1;
         }
     }
-    public ArrayList<SavedInventory> createSavedInventory(){
+
+    public ArrayList<SavedInventory> createSavedInventory() {
         ArrayList<SavedInventory> savedInventory = new ArrayList<>();
 
         for (Item item : containedItems) {
             int itemCount = 1;
-            if(item.getItem_type().equals("Consumable")){
-                itemCount = ((Consumable)item).getItemAmount();
+            if (item.getItem_type().equals("Consumable")) {
+                itemCount = ((Consumable) item).getItemAmount();
             } else if (item.getItem_type().equals("Resource")) {
-                itemCount = ((Resource)item).getItemAmount();
+                itemCount = ((Resource) item).getItemAmount();
             }
             SavedInventory itemToBeSaved = new SavedInventory(item.getItem_id(), itemCount);
             savedInventory.add(itemToBeSaved);

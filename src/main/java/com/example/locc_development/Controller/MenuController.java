@@ -39,11 +39,11 @@ public class MenuController {
                         int itemSlot = 1;
                         for (Item item : inventoryManager.showInventory()) {
                             if (item.getItem_type().equals("Consumable")) {
-                                System.out.println("Inventory space " + itemSlot + " contains " + item.getItem_type() + " " + item.getItem_name() + " " + ((Consumable) item).getItemAmount());
+                                System.out.println("Inventory space " + itemSlot + " contains " + item.getItem_type() + " " + item.getItem_name() + " " + ((Consumable) item).getItemAmount() + " Stack weight " + item.getItem_weight());
                             } else if (item.getItem_type().equals("Resource")) {
-                                System.out.println("Inventory space " + itemSlot + " contains " + item.getItem_type() + " " + item.getItem_name() + " " + ((Resource) item).getItemAmount());
+                                System.out.println("Inventory space " + itemSlot + " contains " + item.getItem_type() + " " + item.getItem_name() + " " + ((Resource) item).getItemAmount() + " Stack weight " + item.getItem_weight());
                             } else {
-                                System.out.println("Inventory space " + itemSlot + " contains " + item.getItem_type() + " " + item.getItem_name());
+                                System.out.println("Inventory space " + itemSlot + " contains " + item.getItem_type() + " " + item.getItem_name() + " Item weight " + item.getItem_weight());
                             }
                             itemSlot++;
                         }// loop
@@ -107,7 +107,9 @@ public class MenuController {
                                     """);
                             String userSearchInput = input.next();
                             System.out.println("Searching inventory for " + userSearchInput + "...");
-                            inventoryManager.searchInventory(userSearchInput);
+                            Item item;
+                            item = inventoryManager.searchInventory(userSearchInput);
+                            System.out.println(item.getItem_name() + " " + item.getItem_description());
                         }
                     }
                     break;

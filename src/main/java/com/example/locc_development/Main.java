@@ -13,12 +13,13 @@ public class Main extends Application {
     // JavaFX Scene Builder Start
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("startup_screen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 640, 360);
+        stage.setTitle("Launch Screen!");
         stage.setScene(scene);
         stage.show();
-    }
+    }// JavaFX Scene Builder Start End
+
 
     public static void main(String[] args) {
         MenuController menuController = new MenuController();

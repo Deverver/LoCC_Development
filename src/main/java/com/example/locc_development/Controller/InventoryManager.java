@@ -127,8 +127,12 @@ public class InventoryManager {
     }
 
     public Item searchInventory(String searchedName) {
-        inventory.findContainedItemByName(searchedName);
-        return null;
+        int index;
+        index = inventory.findContainedItemByName(searchedName);
+        Item item;
+        item = inventory.findContainedItemByIndex(index);
+
+    return item;
     }
 
     public boolean inventoryFull() {
