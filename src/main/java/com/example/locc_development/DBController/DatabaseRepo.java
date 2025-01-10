@@ -1,6 +1,5 @@
 package com.example.locc_development.DBController;
 
-import com.example.locc_development.Controller.InventoryManager;
 import com.example.locc_development.Controller.SavedInventory;
 import com.example.locc_development.Controller.ScenarioManager;
 import com.example.locc_development.Model.*;
@@ -16,7 +15,6 @@ import java.util.List;
 
 public class DatabaseRepo {
     public List<Item> item_list = new ArrayList<>();
-    public InventoryManager inventoryManager = new InventoryManager();
 
     //region Scenario Commands
     public static void uploadToScenarios() {
@@ -196,7 +194,7 @@ public class DatabaseRepo {
     }// createItem End
 
 
-    public Item itemBuilder(int buildItemID, String buildItemName, String buildItemType, String buildItemDescription, double buildItemWeight, double buildItemValue, boolean buildItemStackable) {
+    public Item itemBuilder(int buildItemID, String buildItemName, String buildItemType, String buildItemDescription, double buildItemWeight, double buildItemValue, int buildItemAmount, boolean buildItemStackable) {
         Item buildItem = null;
         int itemID = buildItemID;
         String itemName = buildItemName;
@@ -204,7 +202,7 @@ public class DatabaseRepo {
         String itemDescription = buildItemDescription;
         double itemWeight = buildItemWeight;
         double itemValue = buildItemValue;
-        boolean itemStackable = buildItemStackable;
+        int itemAmount = buildItemAmount;
 
         switch (itemType) {
             case "Weapon":
@@ -226,10 +224,10 @@ public class DatabaseRepo {
                 buildItem = new Armor(itemID, itemType, itemName, itemDescription, itemWeight, itemValue);
                 break;
             case "Consumable":
-                buildItem = new Consumable(itemID, itemType, itemName, itemDescription, itemWeight, itemValue, 1);
+                buildItem = new Consumable(itemID, itemType, itemName, itemDescription, itemWeight, itemValue, itemAmount);
                 break;
             case "Resource":
-                buildItem = new Resource(itemID, itemType, itemName, itemDescription, itemWeight, itemValue, 1);
+                buildItem = new Resource(itemID, itemType, itemName, itemDescription, itemWeight, itemValue, itemAmount);
                 break;
         }
 
@@ -290,7 +288,7 @@ public class DatabaseRepo {
             double itemValue = resultSet.getFloat("itemValue");
             boolean itemStackable = resultSet.getBoolean("itemStackable");
 
-            Item item2 = itemBuilder(itemID, itemName, itemType, itemDescription, itemWeight, itemValue, itemStackable);
+            Item item2 = itemBuilder(itemID, itemName, itemType, itemDescription, itemWeight, itemValue,1, itemStackable);
 
             item_list.add(item2);
 
@@ -359,20 +357,23 @@ public class DatabaseRepo {
 
 
     public List<Item> readSavedInventory() {
-        List<SavedInventory> savedinventories = new ArrayList<>();
+        ArrayList<Item> savedinventories = new ArrayList<>();
         String sql = "SELECT  amount, itemName, itemType, itemDescription, itemWeight, itemValue FROM Savedinventory,Itemlist WHERE ID = itemID ";
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
 
             while (resultSet.next()) {
-                String amount = resultSet.getString("amount");
+                int itemID = resultSet.getInt("itemID");
+                int amount = resultSet.getInt("amount");
                 String itemName = resultSet.getString("itemName");
                 String itemType = resultSet.getString("itemType");
                 String itemDescription = resultSet.getString("itemDescription");
                 double itemWeight = resultSet.getFloat("itemWeight");
                 double itemValue = resultSet.getFloat("itemValue");
                 boolean itemStackable = resultSet.getBoolean("itemStackable");
+
+                savedinventories.add(itemBuilder(itemID, itemType, itemName, itemDescription, itemWeight, itemValue, amount, itemStackable));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -389,7 +390,7 @@ public class DatabaseRepo {
         // add items to the presumed empty inventory on system startup
 
 
-        return List.of();
+        return savedinventories;
     }
 
     public void updateSavedInventory(SavedInventory savedinventory) {

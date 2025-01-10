@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.locc_development.MainFXController">
+   <children>
+      <AnchorPane layoutX="14.0" layoutY="11.0" prefHeight="378.0" prefWidth="376.0">
+         <children>
+            <Label fx:id="InventorySlots" layoutX="10.0" layoutY="20.0" text="0 / 32 lots used" />
+            <ChoiceBox fx:id="sortInventoryChoiceBox" layoutX="270.0" layoutY="16.0" prefHeight="25.0" prefWidth="92.0" />
+            <Button layoutX="217.0" layoutY="16.0" mnemonicParsing="false" text="Sort by" />
+            <ListView fx:id="inventoryListView" layoutX="10.0" layoutY="69.0" prefHeight="273.0" prefWidth="352.0" />
+            <Label fx:id="GoldAmount" layoutX="14.0" layoutY="347.0" text="Gold: ???" />
+            <Label fx:id="inventoryWeight" layoutX="135.0" layoutY="347.0" text="Weight: ?? / ??" />
+            <Label layoutX="10.0" layoutY="48.0" text="Selected Item:" />
+            <Label fx:id="selectedItem" layoutX="93.0" layoutY="48.0" prefHeight="17.0" prefWidth="269.0" text="None" />
+         </children>
+      </AnchorPane>
+      <Button layoutX="390.0" layoutY="295.0" mnemonicParsing="false" text="Go on Adventure" />
+      <Button layoutX="509.0" layoutY="295.0" mnemonicParsing="false" text="Sell Items" />
+      <Button layoutX="576.0" layoutY="25.0" mnemonicParsing="false" text="Exit" />
+      <Button layoutX="390.0" layoutY="328.0" mnemonicParsing="false" text="Sort Inventory" />
+      <TextField fx:id="inventoryInputField" layoutX="388.0" layoutY="259.0" prefHeight="25.0" prefWidth="226.0" promptText="Input field" />
+      <TextArea fx:id="inventoryFeedBackTextArea" layoutX="390.0" layoutY="59.0" prefHeight="195.0" prefWidth="226.0" />
+      <Button layoutX="509.0" layoutY="328.0" mnemonicParsing="false" text="YES" />
+      <Button layoutX="545.0" layoutY="328.0" mnemonicParsing="false" text="NO" />
+   </children>
+</AnchorPane>

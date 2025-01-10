@@ -1,4 +1,4 @@
-package com.example.locc_development.DBController;
+package com.example.locc_development.DBController;//package com.example.locc_development.DBController.DatabaseConnection;
 
 import java.io.*;
 import java.sql.Connection;

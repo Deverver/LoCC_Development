@@ -1,5 +1,6 @@
 package com.example.locc_development.Controller;
 
+import com.example.locc_development.DBController.DatabaseRepo;
 import com.example.locc_development.Model.Inventory;
 import com.example.locc_development.Model.Item;
 
@@ -17,7 +18,7 @@ public class InventoryManager {
     private int currentMaxCapacity = 32;
 
     private final Inventory inventory;
-
+    private final DatabaseRepo databaseRepo = new DatabaseRepo();
     // Constructor
     public InventoryManager() {
         this.inventory = new Inventory();
@@ -170,9 +171,12 @@ public class InventoryManager {
     }
 
     public void saveInventory() {
-
         inventory.createSavedInventory();
     }
 
+    public void readSaved(){
+        //ArrayList<Item> savedList = databaseRepo.readSavedInventory();
+
+    }
 }// InventoryManager End
 

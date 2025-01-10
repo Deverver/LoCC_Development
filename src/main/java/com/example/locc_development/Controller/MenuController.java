@@ -15,9 +15,6 @@ public class MenuController {
     private final DatabaseRepo database = new DatabaseRepo();
 
     public boolean menu(boolean running) {
-
-        //scenarioManager.commands
-
         while (running) {
             System.out.println("""
                     __________________________________
@@ -185,7 +182,7 @@ public class MenuController {
                             Item itemToDelete = inventoryManager.searchInventory(searchedItem);
                             inventoryManager.removeFromInventory(itemToDelete);
                             database.deleteSavedInventory(inventoryManager.searchInventory(searchedItem).getItem_id());
-                            inventoryManager.removeFromInventory(itemToDelete);
+
                             break;
                         case 2:
                             System.out.println("""
@@ -268,4 +265,3 @@ public class MenuController {
 
 
 // MenuController End
-

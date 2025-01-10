@@ -1,6 +1,5 @@
 package com.example.locc_development;
 
-import com.example.locc_development.Controller.MenuController;
 import com.example.locc_development.DBController.DatabaseConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,16 +12,20 @@ public class Main extends Application {
     // JavaFX Scene Builder Start
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("startup_screen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 640, 360);
-        stage.setTitle("Launch Screen!");
-        stage.setScene(scene);
-        stage.show();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("startup_screen.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 640, 400);
+            stage.setTitle("Startup Screen");
+            stage.setScene(scene);
+            stage.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }// JavaFX Scene Builder Start End
 
 
     public static void main(String[] args) {
-        MenuController menuController = new MenuController();
+        //MenuController menuController = new MenuController();
 
         try {
             DatabaseConnection.createFiles();
@@ -31,11 +34,12 @@ public class Main extends Application {
         } catch (Exception e3) {
             e3.printStackTrace();
         }
-
+        System.out.println(Main.class.getResource("startup_screen.fxml"));
+        /*
         boolean run = true;
         menuController.menu(run);
-
-        //launch();
+        */
+        launch();
 
 
 
