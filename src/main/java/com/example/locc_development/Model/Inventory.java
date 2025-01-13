@@ -46,11 +46,13 @@ public class Inventory {
                 Consumable consumableItem = (Consumable) existingItem;
                 consumableItem.setItemAmount(consumableItem.getItemAmount() + 1);
                 consumableItem.setItem_weight(consumableItem.getItem_weight() + item.getItem_weight());
+                consumableItem.setItem_value(consumableItem.getItem_value() + item.getItem_value());
                 return 1;
             } else if (item instanceof Resource) {
                 Resource resourceItem = (Resource) existingItem;
                 resourceItem.setItemAmount(resourceItem.getItemAmount() + 1);
                 resourceItem.setItem_weight(resourceItem.getItem_weight() + item.getItem_weight());
+                resourceItem.setItem_value(resourceItem.getItem_value() + item.getItem_value());
                 return 1;
             } else {
                 containedItems.add(item);
@@ -72,26 +74,50 @@ public class Inventory {
         int existingItemIndex = findContainedItemByName(item.getItem_name());
         if (existingItemIndex != -1) {
             Item existingItem = containedItems.get(existingItemIndex);
-            if (item instanceof Consumable){
-                Consumable consumableItem = (Consumable) existingItem;
-                consumableItem.setItemAmount(consumableItem.getItemAmount() - 1);
-                consumableItem.setItem_weight(consumableItem.getItem_weight() - item.getItem_weight());
-            } else if (item instanceof Resource) {
-                Resource resourceItem = (Resource) existingItem;
-                resourceItem.setItemAmount(resourceItem.getItemAmount() - 1);
-                resourceItem.setItem_weight(resourceItem.getItem_weight() - item.getItem_weight());
-            } else {
-                containedItems.remove(existingItemIndex);
-            }
+            containedItems.remove(existingItemIndex);
             return 1;
         } else {
             return 0;
         }
     }
 
+    public int removeItemAmount(Item item, int amountToRemove) {
+        int existingItemIndex = findContainedItemByName(item.getItem_name());
+        if (existingItemIndex != -1) {
+            Item existingItem = containedItems.get(existingItemIndex);
+            if (item instanceof Consumable) {
+                Consumable consumableItem = (Consumable) existingItem;
+                if (consumableItem.getItemAmount() - amountToRemove == 0) {
+                    removeItem(item);
+                    return 1;
+                } else if (consumableItem.getItemAmount() > amountToRemove) {
+                    consumableItem.setItem_weight(consumableItem.getItem_weight() - ((consumableItem.getItem_weight() / consumableItem.getItemAmount()) * amountToRemove));
+                    consumableItem.setItem_value(consumableItem.getItem_value() - ((consumableItem.getItem_value() / consumableItem.getItemAmount()) * amountToRemove));
+                    consumableItem.setItemAmount((consumableItem.getItemAmount() - amountToRemove));
+                    return 1;
+                }
+            } else {
+                existingItem = containedItems.get(existingItemIndex);
+                if (item instanceof Resource) {
+                    Resource resourceItem = (Resource) existingItem;
+                    if (resourceItem.getItemAmount() - amountToRemove == 0) {
+                        removeItem(item);
+                        return 1;
+                    } else if (resourceItem.getItemAmount() > amountToRemove) {
+                        resourceItem.setItem_weight(resourceItem.getItem_weight() - ((resourceItem.getItem_weight() / resourceItem.getItemAmount()) * amountToRemove));
+                        resourceItem.setItem_value(resourceItem.getItem_value() - ((resourceItem.getItem_value() / resourceItem.getItemAmount()) * amountToRemove));
+                        resourceItem.setItemAmount((resourceItem.getItemAmount() - amountToRemove));
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 0;
+    }// removeItemAmount used for Stackable items
+
     public List<Item> getContainedItems() {
         return containedItems;
-
+    }
 
         /*
         This will be a separate method for when we another ui
@@ -102,8 +128,6 @@ public class Inventory {
         }
         return listedInventory;
         */
-
-    }
 
     public int findContainedItemByName(String searchedItemName) {
         for (Item item : containedItems) {
@@ -127,6 +151,11 @@ public class Inventory {
             return -1;
         }
     }
+
+    public void setContainedInventoryMaxCapacity(int containedInventoryMaxCapacity) {
+        this.containedInventoryMaxCapacity = containedInventoryMaxCapacity;
+    }
+
 
     public ArrayList<SavedInventory> createSavedInventory() {
         ArrayList<SavedInventory> savedInventory = new ArrayList<>();

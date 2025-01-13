@@ -1,9 +1,12 @@
 package com.example.locc_development.Controller;
 
 import com.example.locc_development.DBController.DatabaseRepo;
+import com.example.locc_development.Model.Consumable;
 import com.example.locc_development.Model.Inventory;
 import com.example.locc_development.Model.Item;
+import com.example.locc_development.Model.Resource;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -19,6 +22,7 @@ public class InventoryManager {
 
     private final Inventory inventory;
     private final DatabaseRepo databaseRepo = new DatabaseRepo();
+
     // Constructor
     public InventoryManager() {
         this.inventory = new Inventory();
@@ -77,10 +81,10 @@ public class InventoryManager {
         return currentMaxCapacity;
     }
 
-    public void setCurrentMaxCapacity(int WantedMaxCapacity) {
-        if (currentMaxCapacity != WantedMaxCapacity) {
-            if (inventory.setInventoryMaxCapacity(WantedMaxCapacity) == 1) {
-                this.currentMaxCapacity = WantedMaxCapacity;
+    public void setCurrentMaxCapacity(int wantedMaxCapacity) {
+        if (currentMaxCapacity != wantedMaxCapacity) {
+            if (inventory.setInventoryMaxCapacity(wantedMaxCapacity) == 1) {
+                this.currentMaxCapacity = wantedMaxCapacity;
             }
         }
     }
@@ -98,7 +102,7 @@ public class InventoryManager {
 
     public int removeFromInventory(Item item) {
         if (inventory.removeItem(item) == 1) {
-            this.goldAmount += item.getItem_value();
+            goldAmount += item.getItem_value();
             refreshInventory();
             return 1;
         } else {
@@ -106,6 +110,36 @@ public class InventoryManager {
         }
     }
 
+    public int removeAmountFromInventory(Item item, int amountToRemove) {
+        if (inventory.removeItemAmount(item, amountToRemove) == 1) {
+            if (item instanceof Consumable) {
+                goldAmount += ((item.getItem_value() / ((Consumable) item).getItemAmount()) * amountToRemove);
+            } else if (item instanceof Resource) {
+                goldAmount += ((item.getItem_value() / ((Resource) item).getItemAmount()) * amountToRemove);
+            }
+            refreshInventory();
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /*
+    public int removeAmountFromInventory(Resource item, int amountToRemove) {
+        goldAmount += (item.getItem_value() * amountToRemove);
+        System.out.println(item.getItem_value() + " 2");
+        System.out.println(item.getItem_value() * amountToRemove + " 3");
+        if (inventory.removeItemAmount(item, amountToRemove) == 1) {
+            System.out.println(goldAmount + " 1");
+            System.out.println(item.getItem_value() + " 2");
+            System.out.println(item.getItem_value() * amountToRemove + " 3");
+            refreshInventory();
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+*/
     public List<Item> showInventory() {
 
         return inventory.getContainedItems();
@@ -120,11 +154,11 @@ public class InventoryManager {
     }
 
     public void sortInventoryWeight() {
-        inventory.getContainedItems().sort(Comparator.comparingDouble(Item::getItem_weight));
+        inventory.getContainedItems().sort(Comparator.comparingDouble(Item::getItem_weight).reversed());
     }
 
     public void sortInventoryValue() {
-        inventory.getContainedItems().sort(Comparator.comparingDouble(Item::getItem_value));
+        inventory.getContainedItems().sort(Comparator.comparingDouble(Item::getItem_value).reversed());
     }
 
     public Item searchInventory(String searchedName) {
@@ -133,7 +167,7 @@ public class InventoryManager {
         Item item;
         item = inventory.findContainedItemByIndex(index);
 
-    return item;
+        return item;
     }
 
     public boolean inventoryFull() {
@@ -152,9 +186,10 @@ public class InventoryManager {
     }
 
     public int upgradeInventory() {
-        if (inventory.getContainedInventoryMaxCapacity() <= absoluteMaxCapacity - upgradeValue) {
-            inventory.setInventoryMaxCapacity(inventory.getContainedInventoryMaxCapacity() + upgradeValue);
-            setCurrentMaxCapacity(inventory.getContainedInventoryMaxCapacity());
+        if (inventory.getContainedInventoryMaxCapacity() <= (absoluteMaxCapacity - upgradeValue)) {
+            this.setCurrentMaxCapacity(this.getCurrentMaxCapacity() + upgradeValue);
+            this.inventory.setContainedInventoryMaxCapacity(this.getCurrentMaxCapacity());
+            this.setWeightLimit(getWeightLimit() + 25);
             return 1;
         } else {
             return 0;
@@ -174,7 +209,28 @@ public class InventoryManager {
         inventory.createSavedInventory();
     }
 
-    public void readSaved(){
+    public ArrayList<String> shownNames() {
+        Item item = null;
+        ArrayList<String> shownNames = new ArrayList<>();
+
+        inventory.getContainedItems();
+        for (int i = 0; i < inventory.getContainedItems().size(); i++) {
+            item = inventory.getContainedItems().get(i);
+            if (item instanceof Consumable) {
+                String buildString = ("Slot [" + (i + 1) + "] " + "'" + item.getItem_name() + "'" + ", amount: " + ((Consumable) item).getItemAmount() + ", value: " + item.getItem_value() + ", weight: " + item.getItem_weight());
+                shownNames.add(buildString);
+            } else if (item instanceof Resource) {
+                String buildString = ("Slot [" + (i + 1) + "] " + "'" + item.getItem_name() + "'" + ", amount: " + ((Resource) item).getItemAmount() + ", value: " + item.getItem_value() + ", weight: " + item.getItem_weight());
+                shownNames.add(buildString);
+            } else {
+                String buildString = ("Slot [" + (i + 1) + "] " + "'" + item.getItem_name() + "'" + ", value: " + item.getItem_value() + ", weight: " + item.getItem_weight());
+                shownNames.add(buildString);
+            }
+        }
+        return shownNames;
+    }
+
+    public void readSaved() {
         //ArrayList<Item> savedList = databaseRepo.readSavedInventory();
 
     }

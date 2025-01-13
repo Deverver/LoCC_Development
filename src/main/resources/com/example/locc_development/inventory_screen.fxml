@@ -17,13 +17,14 @@
             <Label fx:id="selectedItem" layoutX="93.0" layoutY="48.0" prefHeight="17.0" prefWidth="269.0" text="None" />
          </children>
       </AnchorPane>
-      <Button layoutX="390.0" layoutY="295.0" mnemonicParsing="false" text="Go on Adventure" />
-      <Button layoutX="509.0" layoutY="295.0" mnemonicParsing="false" text="Sell Items" />
-      <Button layoutX="576.0" layoutY="25.0" mnemonicParsing="false" text="Exit" />
-      <Button layoutX="390.0" layoutY="328.0" mnemonicParsing="false" text="Sort Inventory" />
+      <Button layoutX="390.0" layoutY="295.0" mnemonicParsing="false" onAction="#onInventoryGoOnAdventureButtonClick" text="Go on Adventure" />
+      <Button layoutX="509.0" layoutY="295.0" mnemonicParsing="false" onAction="#onInventorySellItemButtonClick" text="Sell Items" />
+      <Button layoutX="576.0" layoutY="25.0" mnemonicParsing="false" onAction="#onInventoryExitButtonClick" text="Exit" />
+      <Button layoutX="390.0" layoutY="328.0" mnemonicParsing="false" onAction="#onInventorySortInventoryButtonClick" text="Sort Inventory" />
       <TextField fx:id="inventoryInputField" layoutX="388.0" layoutY="259.0" prefHeight="25.0" prefWidth="226.0" promptText="Input field" />
-      <TextArea fx:id="inventoryFeedBackTextArea" layoutX="390.0" layoutY="59.0" prefHeight="195.0" prefWidth="226.0" />
-      <Button layoutX="509.0" layoutY="328.0" mnemonicParsing="false" text="YES" />
-      <Button layoutX="545.0" layoutY="328.0" mnemonicParsing="false" text="NO" />
+      <TextArea fx:id="inventoryFeedBackTextArea" layoutX="390.0" layoutY="81.0" prefHeight="173.0" prefWidth="226.0" />
+      <Button layoutX="509.0" layoutY="328.0" mnemonicParsing="false" onAction="#onYesButtonClick" text="YES" />
+      <Button layoutX="545.0" layoutY="328.0" mnemonicParsing="false" onAction="#onNoButtonClick" text="NO" />
+      <Button layoutX="445.0" layoutY="25.0" mnemonicParsing="false" onAction="#onUpgradeButtonClick" text="Upgrade Inventory" />
    </children>
 </AnchorPane>
