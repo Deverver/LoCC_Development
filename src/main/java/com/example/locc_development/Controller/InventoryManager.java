@@ -123,6 +123,10 @@ public class InventoryManager {
             return 0;
         }
     }
+    public int removeUsedItem(Item item) {
+        inventory.removeItemAmount(item, 1);
+        return 1;
+    }
 
     /*
     public int removeAmountFromInventory(Resource item, int amountToRemove) {
@@ -204,11 +208,11 @@ public class InventoryManager {
         setCurrentWeight(updatedWeight);
         setRemainingWeightCapacity(getWeightLimit() - getCurrentWeight());
     }
-
+/*
     public void saveInventory() {
         inventory.createSavedInventory();
     }
-
+*/
     public ArrayList<String> shownNames() {
         Item item = null;
         ArrayList<String> shownNames = new ArrayList<>();
@@ -229,10 +233,12 @@ public class InventoryManager {
         }
         return shownNames;
     }
-
+/*
     public void readSaved() {
         //ArrayList<Item> savedList = databaseRepo.readSavedInventory();
 
     }
+
+ */
 }// InventoryManager End
 

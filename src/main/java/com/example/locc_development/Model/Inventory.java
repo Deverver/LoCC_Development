@@ -1,7 +1,7 @@
 package com.example.locc_development.Model;
 
 
-import com.example.locc_development.Controller.SavedInventory;
+//import com.example.locc_development.Controller.SavedInventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,7 +156,7 @@ public class Inventory {
         this.containedInventoryMaxCapacity = containedInventoryMaxCapacity;
     }
 
-
+/*
     public ArrayList<SavedInventory> createSavedInventory() {
         ArrayList<SavedInventory> savedInventory = new ArrayList<>();
 
@@ -172,6 +172,6 @@ public class Inventory {
         }
         return savedInventory;
     }
-
+*/
 }// Inventory Class End
 

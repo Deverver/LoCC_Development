@@ -101,9 +101,9 @@ public abstract class Item implements ItemAction {
     }
 
 
-    public void useItem(){
-        System.out.println("________________________");
-        System.out.println("You used the " + this.getItem_type() + ", " + this.getItem_name() + ".");
+    public String useItem(){
+        String itemMessage = ("You used a " + this.getItem_type() + " type item, " + this.getItem_name() + ".");
+        return itemMessage;
     }
 
 

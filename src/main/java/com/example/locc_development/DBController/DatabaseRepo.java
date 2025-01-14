@@ -1,6 +1,6 @@
 package com.example.locc_development.DBController;
 
-import com.example.locc_development.Controller.SavedInventory;
+//import com.example.locc_development.Controller.SavedInventory;
 import com.example.locc_development.Controller.ScenarioManager;
 import com.example.locc_development.Model.*;
 
@@ -338,6 +338,7 @@ public class DatabaseRepo {
     //endregion
 
     //region Inventory Commands
+    /*
     public void createSavedInventory(ArrayList<SavedInventory> savedInv) {
         String sql = "INSERT INTO Savedinventory (Fkitemid, Amount,) VALUES (?, ?,)";
         try (Connection connection = DatabaseConnection.getConnection();
@@ -426,6 +427,8 @@ public class DatabaseRepo {
             e.printStackTrace();
         }
     }
+    */
+
     //endregion
 }// DatabaseRepo End
 

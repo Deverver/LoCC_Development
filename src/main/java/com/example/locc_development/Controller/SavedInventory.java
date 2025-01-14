@@ -1,3 +1,4 @@
+/*
 package com.example.locc_development.Controller;
 
 public class SavedInventory {
@@ -24,3 +25,4 @@ public class SavedInventory {
         this.amount = amount;
     }
 }
+*/

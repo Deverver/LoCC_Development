@@ -87,13 +87,14 @@ public class Consumable extends Item {
     }
 
     @Override
-    public void useItem() {
-        if (this.itemAmount == 0) {
-            System.out.println("Item has no charges");
-        } else if (this.itemAmount >= 1) {
-            super.useItem();
-            this.setItemAmount(this.getItemAmount() - 1);
+    public String useItem() {
+        if (this.itemAmount == 1) {
+            String consumableUseMessage = "You used the last of your " + this.getItem_name() + ".";
+            return consumableUseMessage;
+        } else if (this.itemAmount >= 2) {
+            return super.useItem();
         }
+        return null;
     }
     //endregion
 

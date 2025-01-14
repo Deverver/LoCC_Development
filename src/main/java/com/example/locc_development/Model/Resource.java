@@ -90,8 +90,14 @@ public class Resource extends Item {
     }
 
     @Override
-    public void useItem() {
-        super.useItem();
+    public String useItem() {
+        if (this.itemAmount == 1) {
+            String resourceUseMessage = ("You spend the last of your " + this.getItem_name() + ".");
+            return resourceUseMessage;
+        } else if (this.itemAmount >= 2) {
+            return super.useItem();
+        }
+        return null;
     }
 }// End
 

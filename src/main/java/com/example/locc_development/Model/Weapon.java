@@ -92,8 +92,15 @@ public class Weapon extends Item {
     }
 
     @Override
-    public void useItem() {
-        super.useItem();
+    public String useItem() {
+        if (this.isEquipped()) {
+            String weaponUseMessage = ("You used your " + this.getItem_name());
+            return weaponUseMessage;
+        } else {
+            String armorUseMessage = ("You have equipped this weapon: " + this.getItem_name());
+            this.setEquipped(true);
+            return armorUseMessage;
+        }
     }
     //endregion
 

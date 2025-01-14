@@ -181,7 +181,7 @@ public class MenuController {
                             String searchedItem = input.next();
                             Item itemToDelete = inventoryManager.searchInventory(searchedItem);
                             inventoryManager.removeFromInventory(itemToDelete);
-                            database.deleteSavedInventory(inventoryManager.searchInventory(searchedItem).getItem_id());
+                            //database.deleteSavedInventory(inventoryManager.searchInventory(searchedItem).getItem_id());
 
                             break;
                         case 2:

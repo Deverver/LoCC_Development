@@ -2,7 +2,7 @@ package com.example.locc_development.Model;
 
 
 public class Armor extends Item {
-    private boolean IsEquipped;
+    private boolean IsEquipped = false;
 
 
     public Armor() {
@@ -89,8 +89,15 @@ public class Armor extends Item {
     }
 
     @Override
-    public void useItem() {
-        super.useItem();
+    public String useItem() {
+        if (this.isEquipped()) {
+            String armorUseMessage = "You are already wearing this armor.";
+            return armorUseMessage;
+        } else {
+            String armorUseMessage = ("You have equipped armor: " + this.getItem_name());
+            this.setEquipped(true);
+            return armorUseMessage;
+        }
     }
     //endregion
 

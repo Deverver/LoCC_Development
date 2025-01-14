@@ -65,7 +65,6 @@ public class MainFXController implements Initializable {
     public ArrayList<String> shownInventory = inventoryManager.shownNames();
 
     String chosenItem;
-    String yesNoAnswer = null;
 
 
     // We have to use the Initializable interface in order to use a choiceBox, this is because the listView and the ChoiceBox is not populated with data, or any actions.
@@ -97,6 +96,24 @@ public class MainFXController implements Initializable {
         String chosenSortType = sortInventoryChoiceBox.getValue();
     }
 
+    public String splitItem(String item, int selectedPart) {
+        String splittedItem = item;
+        String[] parts = splittedItem.split("'");
+        String part1 = parts[0]; // slot [i]
+        String part2 = parts[1]; // item name
+        String part3 = parts[2]; // item values
+
+        switch (selectedPart) {
+            case 1:
+                return part1;
+            case 2:
+                return part2;
+            case 3:
+                return part3;
+        }
+        return null;
+    }
+
     public void refreshInventory() {
         inventoryListView.getItems().clear();
         shownInventory.clear();
@@ -117,25 +134,34 @@ public class MainFXController implements Initializable {
 
     // Button Click Area
     @FXML
-    public void onYesButtonClick() throws IOException {
-        yesNoAnswer = "Yes";
+    public void onSearchButtonClick() throws IOException {
+        String userSearchInput = inventoryInputField.getText().equals("") ? splitItem(chosenItem, 2) : inventoryInputField.getText();
+        Item item;
+        item = inventoryManager.searchInventory(userSearchInput);
+        inventoryListView.getItems().clear();
+        for (Item item1 : inventoryManager.showInventory()) {
+            int indexCounter = (inventoryManager.showInventory().indexOf(item1) + 1);
+            if (item1.getItem_name().equals(userSearchInput)) {
+                    if (item instanceof Consumable) {
+                        String buildString = ("Slot [" + indexCounter + "] " + "'" + item.getItem_name() + "'" + ", amount: " + ((Consumable) item).getItemAmount() + ", value: " + item.getItem_value() + ", weight: " + item.getItem_weight());
+                        inventoryListView.getItems().add(buildString);
+                    } else if (item instanceof Resource) {
+                        String buildString = ("Slot [" + indexCounter + "] " + "'" + item.getItem_name() + "'" + ", amount: " + ((Resource) item).getItemAmount() + ", value: " + item.getItem_value() + ", weight: " + item.getItem_weight());
+                        inventoryListView.getItems().add(buildString);
+                    } else {
+                        String buildString = ("Slot [" + indexCounter + "] " + "'" + item.getItem_name() + "'" + ", value: " + item.getItem_value() + ", weight: " + item.getItem_weight());
+                        inventoryListView.getItems().add(buildString);
+                    }
+            }
+        }
+        inventoryInputField.setText("");
+        refreshInventoryData();
     }
 
-    @FXML
-    public void onNoButtonClick() throws IOException {
-        yesNoAnswer = "No";
-    }
 
     @FXML
     public void onInventorySellItemButtonClick() throws IOException {
-        String splittedItem = chosenItem;
-        String[] parts = splittedItem.split("'");
-        String part1 = parts[0]; // slot [i]
-        String part2 = parts[1]; // item name
-        String part3 = parts[2]; // item values
-
-
-        Item itemToDelete = inventoryManager.searchInventory(part2);
+        Item itemToDelete = inventoryManager.searchInventory(splitItem(chosenItem, 2));
         if (itemToDelete instanceof Consumable || itemToDelete instanceof Resource) {
             int amount = inventoryInputField.getText().equals("") ? 1 : Integer.parseInt(inventoryInputField.getText());
             inventoryManager.removeAmountFromInventory(itemToDelete, amount);
@@ -192,6 +218,39 @@ public class MainFXController implements Initializable {
                 break;
         }// Switch End
     }// onInventorySortInventoryButtonClick End
+
+    @FXML
+    public void onUseItemButtonClick() throws IOException {
+        Item itemToUse = inventoryManager.searchInventory(splitItem(chosenItem, 2));
+        String itemUseFeedback = itemToUse.useItem();
+        if (itemToUse instanceof Consumable || itemToUse instanceof Resource) {
+            inventoryFeedBackTextArea.setText(itemUseFeedback);
+            inventoryManager.removeUsedItem(itemToUse);
+            refreshInventory();
+            refreshInventoryData();
+
+        } else {
+            inventoryFeedBackTextArea.setText(itemUseFeedback);
+            refreshInventory();
+            refreshInventoryData();
+        }
+
+
+
+
+
+
+
+
+
+
+    }
+
+    @FXML
+    public void onRefreshInventoryButtonCLick() throws IOException {
+        refreshInventory();
+        refreshInventoryData();
+    }
 
     @FXML
     public void onInventoryExitButtonClick() {

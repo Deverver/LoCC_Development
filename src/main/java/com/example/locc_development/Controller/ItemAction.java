@@ -20,6 +20,6 @@ public interface ItemAction {
 
     String showItemInfo();
 
-    void useItem();
+    String useItem();
 
 }// End
