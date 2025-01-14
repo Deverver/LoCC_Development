@@ -19,6 +19,7 @@ public class Main extends Application {
             stage.setScene(scene);
             stage.show();
         }catch (Exception e){
+
             e.printStackTrace();
         }
     }// JavaFX Scene Builder Start End
